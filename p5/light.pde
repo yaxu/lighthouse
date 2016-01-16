@@ -59,7 +59,7 @@ void draw()
 */
 
   for(int i=0; i < lighthouses.size(); i++) {
-    lighthouses.get(i).update(millis());
+    lighthouses.get(i).update(millis(), mouseX, mouseY);
   }
 }
 
@@ -67,6 +67,7 @@ void addLighthouse(int x, int y, string sequence) {
   PVector p1 = geoToPixel(new PVector(x,y));  // London
 
   Lighthouse lighthouse = new Lighthouse(p1.x,p1.y,sequence,false);
+  lighthouse.freq = random(110, 1200);
     lighthouses.add(lighthouse);
     println(sequence);
 }
@@ -127,6 +128,8 @@ class Lighthouse {
   int index;
   int x;
   int y;
+  int freq;
+  float amp;
   string sequence;
 
   Lighthouse (int in_x, int in_y, String raw_pattern, boolean occulting) {  
@@ -136,16 +139,27 @@ class Lighthouse {
     x = in_x;
     y = in_y;
     index = 0;
+    freq = 440;
+    amp = 0.1;
   }
 
-  void update (int millis) {
+  void update (int millis, int mx, int my) {
     if(millis > next_time) {
       index = (index + 1) % pattern.size();
       next_time = int(millis + (pattern.get(index).length * 1000));
       if(pattern.get(index).on) {
-        synth.triggerAttackRelease("C5", pattern.get(index).length);
+        synth.triggerAttackRelease(freq, pattern.get(index).length, amp);
       }
     }
+
+    int d = dist(x,y,mx,my);
+    if(d > 100) {
+      amp = 0;
+    }
+    else {
+      amp = 1.0 - (d/100) + 0.1;
+    }
+
     
     if(pattern.get(index).on) { 
       fill(255);
