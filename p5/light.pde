@@ -18,39 +18,42 @@ void setup()
 
   mapScreenWidth  = width;
   mapScreenHeight = height;
-
+/*
   PVector p1 = geoToPixel(new PVector(0.8,51.5));  // London
   Lighthouse lh1 = new Lighthouse(p1, "0.2+(2)+0.2+(2)+0.2+(5.4)", false);
   lighthouses.add(lh1);
   PVector p2 = geoToPixel(new PVector(0.9759301,50.913452));       // Dungeness
   Lighthouse lh2 = new Lighthouse(p2, "8+(2)", false);
   lighthouses.add(lh2);
-
+*/
   println("hello\n");
 }
 
 void draw()
 {
-  background(255);
+  background(0);
   //image(backgroundMap,0,0,mapScreenWidth,mapScreenHeight);
   //  ellipse(10,10,5,10);
   noStroke();
-  
+
+/*  
   for (int i = 0; i < lighthouses.size(); ++i) {
     Lighthouse lighthouse = lighthouses.get(i);
     PVector p = geoToPixel(new PVector(lighthouse.x,lighthouse.y));
     fill(255,0,0);
     ellipse(p.x,p.y,10,10);
   }
+*/
 
-
-  /*for(int i=0; i < lighthouses.size(); i++) {
+  for(int i=0; i < lighthouses.size(); i++) {
     lighthouses.get(i).update(millis());
-  }*/
+  }
 }
 
 void addLighthouse(int x, int y, string sequence) {
-  Lighthouse lighthouse = new Lighthouse(x,y,sequence,false);
+  PVector p1 = geoToPixel(new PVector(x,y));  // London
+
+  Lighthouse lighthouse = new Lighthouse(p1.x,p1.y,sequence,false);
     lighthouses.add(lighthouse);
     println(sequence);
 }
@@ -114,7 +117,7 @@ class Lighthouse {
   string sequence;
 
   Lighthouse (int in_x, int in_y, String raw_pattern, boolean occulting) {  
-    location = loc;
+//    location = loc;
     pattern = parse_pattern(raw_pattern);
     next_time = 0;
     x = in_x;
@@ -126,9 +129,9 @@ class Lighthouse {
     if(millis > next_time) {
       index = (index + 1) % pattern.size();
       next_time = int(millis + (pattern.get(index).length * 1000));
-      /*if(pattern.get(index).get(0)) {
-        synth.triggerAttackRelease("C4", seq.get(index).get(1));
-        }*/
+      if(pattern.get(index).on) {
+        //synth.triggerAttackRelease("C4", seq.get(index).get(1));
+      }
     }
     
     if(pattern.get(index).on) { 
