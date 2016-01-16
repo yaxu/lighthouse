@@ -19,7 +19,8 @@ synth.envelope = ampEnv;*/
 //create a distortion effect
 var distortion = new Tone.Distortion(0.4).toMaster();
 
-
+PImage lhon = loadImage("johnny-automatic-lighthouse WHITE.png");
+PImage lhoff = loadImage("johnny-automatic-lighthouse BLACK.png");
 
 ArrayList<Lighthouse> lighthouses = new ArrayList<Lighthouse>();
 
@@ -142,7 +143,7 @@ class Lighthouse {
       index = (index + 1) % pattern.size();
       next_time = int(millis + (pattern.get(index).length * 1000));
       if(pattern.get(index).on) {
-        //synth.triggerAttackRelease("C4", seq.get(index).get(1));
+        synth.triggerAttackRelease("C5", pattern.get(index).length);
       }
     }
     
