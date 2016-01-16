@@ -8,11 +8,12 @@ float mapGeoBottom =  49.871159;
 
 float mapScreenWidth, mapScreenHeight;  // Dimension of map in pixels.
 
+ArrayList<Lighthouse> lighthouses = new ArrayList<Lighthouse>();
+
 void setup()
 {
-  size(600,60);
+  size(600,600);
   smooth();
-  noLoop();
   mapScreenWidth  = width;
   mapScreenHeight = height;
 }
@@ -23,16 +24,23 @@ void draw()
   //image(backgroundMap,0,0,mapScreenWidth,mapScreenHeight);
   //  ellipse(10,10,5,10);
   noStroke();
+  
+  for (int i = 0; i < lighthouses.size(); ++i) {
+    Lighthouse lighthouse = lighthouses.get(i);
+    PVector p = geoToPixel(new PVector(lighthouse.x,lighthouse.y));
+    fill(255,0,0);
+    ellipse(p.x,p.y,10,10);
+  }
+    //  }
+}
 
-  fill(180,120,120);
-  println("hello\n");
-  fill(0,255,0);
-  PVector p = geoToPixel(new PVector(0.8,51.5));  // London
-  ellipse(p.x,p.y,10,10);
-  fill(0,0,255);
-  fill(255,0,0);
-  p = geoToPixel(new PVector(0.9759301,50.913452));       // Dungeness
-  ellipse(p.x,p.y,10,10);
+void addLighthouse(int x, int y, string sequence) {
+    Lighthouse lighthouse = new Lighthouse();
+    lighthouse.x = x;
+    lighthouse.y = y;
+    lighthouse.sequence = sequence;
+    lighthouses.add(lighthouse);
+    println(sequence);
 }
 
 // Converts screen coordinates into geographical coordinates. 
@@ -49,4 +57,10 @@ public PVector geoToPixel(PVector geoLocation)
 {
     return new PVector(mapScreenWidth*(geoLocation.x-mapGeoLeft)/(mapGeoRight-mapGeoLeft),
                        mapScreenHeight - mapScreenHeight*(geoLocation.y-mapGeoBottom)/(mapGeoTop-mapGeoBottom));
+}
+
+class Lighthouse {
+    int x;
+    int y;
+    string sequence;
 }
