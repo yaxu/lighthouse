@@ -1,0 +1,25 @@
+<html>
+<head>
+<title>light</title>
+</head>
+<body>
+
+<script src="processing.js"></script>
+
+<script type="text/javascript">
+function lighthouses() {
+  var pjs = Processing.getInstanceById(id);
+  var json = $.get("http://thatfunkysite.com/serving/json.asp");
+  var data = eval("("+json+")");
+  if(data) {
+    // we know the JSON is an array of points, called "points"
+    for(p=0, end=data.points.length; p<end; p++) {
+      var point = data.points[p];
+      pjs.addPoint(point.x, point.y);
+    }
+  }
+}
+</script>
+<canvas data-processing-sources="light.pde"></canvas>
+</body>
+</html>
