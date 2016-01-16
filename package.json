@@ -1,0 +1,22 @@
+{
+  "name": "guiding_lights",
+  "version": "0.0.0",
+  "description": "",
+  "main": "process.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yaxu/lighthouse.git"
+  },
+  "author": "The Lighthouse Family",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yaxu/lighthouse/issues"
+  },
+  "dependencies": {
+    "basic-csv": "0.0.2",
+    "geodesy": "~1.0.2"
+  }
+}
