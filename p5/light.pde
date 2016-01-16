@@ -9,15 +9,13 @@ float mapGeoBottom =  49.871159;
 float mapScreenWidth, mapScreenHeight;  // Dimension of map in pixels.
 
 
-int i = 0; 
-
-ArrayList[] lighthouses = new ArrayList();
+ArrayList<Lighthouse> lighthouses = new ArrayList<Lighthouse>();
 
 void setup()
 {
-  size(600,60);
+  size(600,600);
   smooth();
-  //noLoop();
+
   mapScreenWidth  = width;
   mapScreenHeight = height;
 
@@ -37,12 +35,24 @@ void draw()
   //image(backgroundMap,0,0,mapScreenWidth,mapScreenHeight);
   //  ellipse(10,10,5,10);
   noStroke();
-
   
-  for(int i=0; i < lighthouses.size(); i++) {
-    lighthouses.get(i).update(millis());
+  for (int i = 0; i < lighthouses.size(); ++i) {
+    Lighthouse lighthouse = lighthouses.get(i);
+    PVector p = geoToPixel(new PVector(lighthouse.x,lighthouse.y));
+    fill(255,0,0);
+    ellipse(p.x,p.y,10,10);
   }
 
+
+  /*for(int i=0; i < lighthouses.size(); i++) {
+    lighthouses.get(i).update(millis());
+  }*/
+}
+
+void addLighthouse(int x, int y, string sequence) {
+  Lighthouse lighthouse = new Lighthouse(x,y,sequence,false);
+    lighthouses.add(lighthouse);
+    println(sequence);
 }
 
 // Converts screen coordinates into geographical coordinates. 
@@ -96,15 +106,19 @@ class Event {
 
 
 class Lighthouse { 
-  PVector location;
   ArrayList[] pattern;
   int next_time;
   int index;
+  int x;
+  int y;
+  string sequence;
 
-  Lighthouse (PVector loc, String raw_pattern, boolean occulting) {  
+  Lighthouse (int in_x, int in_y, String raw_pattern, boolean occulting) {  
     location = loc;
     pattern = parse_pattern(raw_pattern);
     next_time = 0;
+    x = in_x;
+    y = in_y;
     index = 0;
   }
 
@@ -123,6 +137,7 @@ class Lighthouse {
     else {
       fill(0);
     }
-    ellipse(location.x,location.y,10,10);
+    ellipse(x,y,10,10);
   }
 }
+

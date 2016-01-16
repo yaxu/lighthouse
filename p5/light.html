@@ -5,21 +5,40 @@
 <body>
 
 <script src="processing.js"></script>
+<script src="jquery-2.2.0.js"></script>
 
 <script type="text/javascript">
-function lighthouses() {
-  var pjs = Processing.getInstanceById(id);
-  var json = $.get("http://thatfunkysite.com/serving/json.asp");
-  var data = eval("("+json+")");
-  if(data) {
-    // we know the JSON is an array of points, called "points"
-    for(p=0, end=data.points.length; p<end; p++) {
-      var point = data.points[p];
-      pjs.addPoint(point.x, point.y);
-    }
+var bound = false;
+var pjs;
+function waitforp5() {
+  pjs = Processing.getInstanceById("light");
+  if(pjs!=null) {
+    /* pjs.bindJavascript(this); */
+    bound = true;
   }
+  if(!bound) setTimeout(waitforp5, 250);
+  loadLighthouses();
 }
+
+function loadLighthouses() {
+//var pjs = Processing.getInstanceById("light");
+  $.getJSON( "../lighthouses/lighthouses.geojson", function( data ) {
+    for(p=0, end=data.features.length; p<end; p++) {
+      var feature = data.features[p];
+      var sequence = feature.properties["seamark:light:sequence"];
+      if (sequence) {
+        var x = feature.geometry.coordinates[0];
+        var y = feature.geometry.coordinates[1];
+        pjs.addLighthouse(x,y,sequence);
+      }
+    }
+  });
+}
+
+$(document).ready(function() {
+  waitforp5();
+});
 </script>
-<canvas data-processing-sources="light.pde"></canvas>
+<canvas data-processing-sources="light.pde" id="light"></canvas>
 </body>
 </html>
