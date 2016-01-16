@@ -1,10 +1,10 @@
 PImage backgroundMap;
 
 // bounding box of England
-float mapGeoLeft   = -6.37988;
-float mapGeoRight  =  1.76696;
-float mapGeoTop    =   55.811741;
-float mapGeoBottom =  49.871159;
+float mapGeoLeft   = -9.37988;
+float mapGeoRight  =  4;
+float mapGeoTop    =   60.811741;
+float mapGeoBottom =  49;
 
 float mapScreenWidth, mapScreenHeight;  // Dimension of map in pixels.
 var synth = new Tone.SimpleSynth().toMaster();
@@ -26,7 +26,7 @@ ArrayList<Lighthouse> lighthouses = new ArrayList<Lighthouse>();
 
 void setup()
 {
-  size(600,600);
+  size(600,800);
   smooth();
 
   mapScreenWidth  = width;
@@ -39,12 +39,11 @@ void setup()
   Lighthouse lh2 = new Lighthouse(p2, "8+(2)", false);
   lighthouses.add(lh2);
 */
-  println("hello\n");
 }
 
 void draw()
 {
-  background(0);
+  background(32,32,96);
   //image(backgroundMap,0,0,mapScreenWidth,mapScreenHeight);
   //  ellipse(10,10,5,10);
   noStroke();
@@ -68,7 +67,6 @@ void addLighthouse(int x, int y, string sequence) {
 
   Lighthouse lighthouse = new Lighthouse(p1.x,p1.y,sequence,false);
     lighthouses.add(lighthouse);
-    println(sequence);
 }
 
 // Converts screen coordinates into geographical coordinates. 
@@ -148,12 +146,11 @@ class Lighthouse {
     }
     
     if(pattern.get(index).on) { 
-      fill(255);
+      image(lhon,x,y,10,10);
     }
     else {
-      fill(0);
+      image(lhoff,x,y,10,10);
     }
-    ellipse(x,y,10,10);
   }
 }
 
