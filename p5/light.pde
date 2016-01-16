@@ -7,6 +7,18 @@ float mapGeoTop    =   55.811741;
 float mapGeoBottom =  49.871159;
 
 float mapScreenWidth, mapScreenHeight;  // Dimension of map in pixels.
+var synth = new Tone.SimpleSynth().toMaster();
+/*var ampEnv = new Tone.AmplitudeEnvelope({
+  "attack": 0.1,
+  "decay": 0.1,
+  "sustain": 1.0,
+  "release": 0.3
+}).toMaster();
+synth.envelope = ampEnv;*/
+
+//create a distortion effect
+var distortion = new Tone.Distortion(0.4).toMaster();
+
 
 
 ArrayList<Lighthouse> lighthouses = new ArrayList<Lighthouse>();
