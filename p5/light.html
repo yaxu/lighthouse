@@ -23,7 +23,7 @@ function waitforp5() {
 
 function loadLighthouses() {
 //var pjs = Processing.getInstanceById("light");
-  $.getJSON( "../lighthouses/lighthouses.geojson", function( data ) {
+  $.getJSON( "../data/lighthouses.geojson", function( data ) {
     for(p=0, end=data.features.length; p<end; p++) {
       var feature = data.features[p];
       var sequence = feature.properties["seamark:light:sequence"];
