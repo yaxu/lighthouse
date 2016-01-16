@@ -56,7 +56,7 @@ void draw()
     ellipse(p.x,p.y,10,10);
   }
 */
-
+  //println(mouseX);
   for(int i=0; i < lighthouses.size(); i++) {
     lighthouses.get(i).update(millis(), mouseX, mouseY);
   }
@@ -146,17 +146,20 @@ class Lighthouse {
       index = (index + 1) % pattern.size();
       next_time = int(millis + (pattern.get(index).length * 1000));
       if(pattern.get(index).on) {
-        synth.triggerAttackRelease(freq, pattern.get(index).length, amp);
+        if(amp > 0) {
+          synth.triggerAttackRelease(freq, pattern.get(index).length, amp);
+        }
       }
     }
 
     int d = dist(x,y,mx,my);
-    if(d > 100) {
-      amp = 0;
+    if(d > 200) {
+      amp = 0.0;
     }
     else {
       amp = 1.0 - (d/100) + 0.1;
     }
+    
 
     
     if(pattern.get(index).on) { 
