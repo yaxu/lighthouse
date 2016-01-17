@@ -62,10 +62,10 @@ void draw()
   }
 }
 
-void addLighthouse(int x, int y, string sequence) {
+void addLighthouse(int x, int y, string sequence, string character) {
   PVector p1 = geoToPixel(new PVector(x,y));  // London
 
-  Lighthouse lighthouse = new Lighthouse(p1.x,p1.y,sequence,false);
+  Lighthouse lighthouse = new Lighthouse(p1.x,p1.y,sequence,character == "Oc");
   lighthouse.freq = random(110, 1200);
     lighthouses.add(lighthouse);
 }

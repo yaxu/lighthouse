@@ -29,10 +29,11 @@ function loadLighthouses() {
     for(p=0, end=data.features.length; p<end; p++) {
       var feature = data.features[p];
       var sequence = feature.properties["seamark:light:sequence"];
+      var character = feature.properties["seamark:light:character"];
       if (sequence) {
         var x = feature.geometry.coordinates[0];
         var y = feature.geometry.coordinates[1];
-        pjs.addLighthouse(x,y,sequence);
+        pjs.addLighthouse(x,y,sequence,character);
       }
     }
   });
