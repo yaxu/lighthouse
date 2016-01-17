@@ -146,9 +146,9 @@ class Lighthouse {
       index = (index + 1) % pattern.size();
       next_time = int(millis + (pattern.get(index).length * 1000));
       if(pattern.get(index).on) {
-        if(amp > 0) {
-          synth.triggerAttackRelease(freq, pattern.get(index).length, amp);
-        }
+//        if(amp > 0) {
+          synth.triggerAttackRelease(freq, pattern.get(index).length);
+//        }
       }
     }
 
@@ -159,8 +159,6 @@ class Lighthouse {
     else {
       amp = 1.0 - (d/100) + 0.1;
     }
-    
-
     
     if(pattern.get(index).on) { 
       image(lhon,x,y,10,10);
