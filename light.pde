@@ -7,10 +7,12 @@ float mapGeoTop    =   60.811741;
 float mapGeoBottom =  49;
 
 float mapScreenWidth, mapScreenHeight;  // Dimension of map in pixels.
-var synth = new Tone.SimpleSynth().toMaster();
+int numVoices = 6;
+var synth = new Tone.PolySynth(numVoices, Tone.SimpleSynth).toMaster();
+synth.set("volume", -12);
 
 //create a distortion effect
-var distortion = new Tone.Distortion(0.4).toMaster();
+//var distortion = new Tone.Distortion(0.1).toMaster();
 
 int maxDist = 100;
 
@@ -49,8 +51,8 @@ void addLighthouse(int x, int y, string sequence, string character) {
   PVector p1 = geoToPixel(new PVector(x,y));  // London
 
   Lighthouse lighthouse = new Lighthouse(p1.x,p1.y,sequence,character == "Oc");
-  lighthouse.freq = random(110, 1200);
-    lighthouses.add(lighthouse);
+  lighthouse.freq = synth.midiToFrequency(random(38.0, 78.0));
+  lighthouses.add(lighthouse);
 }
 
 // Converts screen coordinates into geographical coordinates. 
@@ -128,9 +130,9 @@ class Lighthouse {
       index = (index + 1) % pattern.size();
       next_time = int(millis + (pattern.get(index).length * 1000));
       if(pattern.get(index).on) {
-        int d = dist(x,y,mx,my);
+        float d = dist(x,y,mx,my);
         if(d < maxDist) {
-          amp = 1.0 - (d/maxDist);
+          //amp = (1.0 - (d/maxDist)) / numVoices;
           synth.triggerAttackRelease(freq, pattern.get(index).length);
         }
       }
