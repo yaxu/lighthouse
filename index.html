@@ -4,26 +4,28 @@
 </head>
 <body>
 
-<script src="processing.js"></script>
-<script src="jquery-2.2.0.js"></script>
-<script src="Tone.js"></script>
+<script src="lib/processing.js"></script>
+<script src="lib/jquery-2.2.0.js"></script>
+<script src="lib/Tone.js"></script>
 
 <script type="text/javascript">
 var bound = false;
 var pjs;
 function waitforp5() {
   pjs = Processing.getInstanceById("light");
-  if(pjs!=null) {
+  if(typeof pjs !== "undefined" && pjs != null) {
     /* pjs.bindJavascript(this); */
     bound = true;
   }
-  if(!bound) setTimeout(waitforp5, 250);
-  loadLighthouses();
+  if(!bound) {
+	  setTimeout(waitforp5, 250);
+  } else {
+	loadLighthouses();
+  }
 }
 
 function loadLighthouses() {
-//var pjs = Processing.getInstanceById("light");
-  $.getJSON( "../data/lighthouses.geojson", function( data ) {
+  $.getJSON( "data/lighthouses.geojson", function( data ) {
     for(p=0, end=data.features.length; p<end; p++) {
       var feature = data.features[p];
       var sequence = feature.properties["seamark:light:sequence"];

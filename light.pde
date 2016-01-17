@@ -19,8 +19,8 @@ synth.envelope = ampEnv;*/
 //create a distortion effect
 var distortion = new Tone.Distortion(0.4).toMaster();
 
-PImage lhon = loadImage("johnny-automatic-lighthouse WHITE.png");
-PImage lhoff = loadImage("johnny-automatic-lighthouse BLACK.png");
+PImage lhon = loadImage("images/johnny-automatic-lighthouse WHITE.png");
+PImage lhoff = loadImage("images/johnny-automatic-lighthouse BLACK.png");
 
 ArrayList<Lighthouse> lighthouses = new ArrayList<Lighthouse>();
 
