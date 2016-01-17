@@ -8,16 +8,11 @@ float mapGeoBottom =  49;
 
 float mapScreenWidth, mapScreenHeight;  // Dimension of map in pixels.
 var synth = new Tone.SimpleSynth().toMaster();
-/*var ampEnv = new Tone.AmplitudeEnvelope({
-  "attack": 0.1,
-  "decay": 0.1,
-  "sustain": 1.0,
-  "release": 0.3
-}).toMaster();
-synth.envelope = ampEnv;*/
 
 //create a distortion effect
 var distortion = new Tone.Distortion(0.4).toMaster();
+
+int maxDist = 100;
 
 PImage lhon = loadImage("johnny-automatic-lighthouse WHITE.png");
 PImage lhoff = loadImage("johnny-automatic-lighthouse BLACK.png");
@@ -31,14 +26,7 @@ void setup()
 
   mapScreenWidth  = width;
   mapScreenHeight = height;
-/*
-  PVector p1 = geoToPixel(new PVector(0.8,51.5));  // London
-  Lighthouse lh1 = new Lighthouse(p1, "0.2+(2)+0.2+(2)+0.2+(5.4)", false);
-  lighthouses.add(lh1);
-  PVector p2 = geoToPixel(new PVector(0.9759301,50.913452));       // Dungeness
-  Lighthouse lh2 = new Lighthouse(p2, "8+(2)", false);
-  lighthouses.add(lh2);
-*/
+
 }
 
 void draw()
@@ -48,15 +36,10 @@ void draw()
   //  ellipse(10,10,5,10);
   noStroke();
 
-/*  
-  for (int i = 0; i < lighthouses.size(); ++i) {
-    Lighthouse lighthouse = lighthouses.get(i);
-    PVector p = geoToPixel(new PVector(lighthouse.x,lighthouse.y));
-    fill(255,0,0);
-    ellipse(p.x,p.y,10,10);
-  }
-*/
-  //println(mouseX);
+  fill(255,255,255,10)
+  ellipse(mouseX, mouseY, maxDist*2,maxDist*2)
+  noStroke();
+
   for(int i=0; i < lighthouses.size(); i++) {
     lighthouses.get(i).update(millis(), mouseX, mouseY);
   }
@@ -87,8 +70,8 @@ public PVector geoToPixel(PVector geoLocation)
 }
 
 // Converts a pattern, e.g., "0.2+(2)+0.2+(2)+0.2+(5.4)" into an ArrayList of
-// ArrayLists, e.g., [[true, 0.2], [false, 2], ...]
-// the occulting parameter denotes if the lighthouse is an occulting one,
+// Events.
+// The occulting parameter denotes if the lighthouse is an occulting one,
 // where the pattern doesn't denote on-(off), but (on)-off
 ArrayList[] parse_pattern(String pattern, Boolean occulting) {
   ArrayList[] seq = new ArrayList();
@@ -131,7 +114,6 @@ class Lighthouse {
   string sequence;
 
   Lighthouse (int in_x, int in_y, String raw_pattern, boolean occulting) {  
-//    location = loc;
     pattern = parse_pattern(raw_pattern);
     next_time = 0;
     x = in_x;
@@ -146,20 +128,14 @@ class Lighthouse {
       index = (index + 1) % pattern.size();
       next_time = int(millis + (pattern.get(index).length * 1000));
       if(pattern.get(index).on) {
-//        if(amp > 0) {
+        int d = dist(x,y,mx,my);
+        if(d < maxDist) {
+          amp = 1.0 - (d/maxDist);
           synth.triggerAttackRelease(freq, pattern.get(index).length);
-//        }
+        }
       }
     }
 
-    int d = dist(x,y,mx,my);
-    if(d > 200) {
-      amp = 0.0;
-    }
-    else {
-      amp = 1.0 - (d/100) + 0.1;
-    }
-    
     if(pattern.get(index).on) { 
       image(lhon,x,y,10,10);
     }
